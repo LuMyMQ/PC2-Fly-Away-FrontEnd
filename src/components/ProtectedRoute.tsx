@@ -1,0 +1,15 @@
+import { Navigate, useLocation } from 'react-router-dom'
+import type { ReactNode } from 'react'
+import { useAuth } from '../auth'
+
+// Envuelve rutas que requieren autenticación.
+// Si no hay token, redirige al login.
+export default function ProtectedRoute({ children }: { children: ReactNode }) {
+  const { isAuthenticated } = useAuth()
+  const location = useLocation()
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />
+  }
+  return <>{children}</>
+}
